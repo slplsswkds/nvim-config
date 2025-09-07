@@ -1,27 +1,27 @@
 return {
-	-- Mason core
-	{
-		"williamboman/mason.nvim",
-		build = ":MasonUpdate",
-		config = true,
-	},
-	-- Mason + LSP bridge
-	{
-		"williamboman/mason-lspconfig.nvim",
-		dependencies = { "neovim/nvim-lspconfig" },
-		config = function()
-			require("mason-lspconfig").setup {
-				ensure_installed = { "clangd", "pyright" },
-			}
+  -- Mason core
+  {
+    "williamboman/mason.nvim",
+    build = ":MasonUpdate",
+    config = true,
+  },
+  -- Mason + LSP bridge
+  {
+    "williamboman/mason-lspconfig.nvim",
+    dependencies = { "neovim/nvim-lspconfig" },
+    config = function()
+      require("mason-lspconfig").setup {
+        ensure_installed = { "pyright" }, -- ✅ тільки ті, що Mason реально може поставити
+      }
 
-			local lspconfig = require("lspconfig")
+      local lspconfig = require("lspconfig")
 
-			-- C / C++
-			lspconfig.clangd.setup {}
+      -- Clangd беремо із системи (apk add clang-extra-tools)
+      lspconfig.clangd.setup {}
 
-			-- Python
-			lspconfig.pyright.setup {}
-		end,
-	},
+      -- Python (ставиться Mason через npm)
+      lspconfig.pyright.setup {}
+    end,
+  },
 }
 
